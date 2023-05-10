@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json')
 
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/Users');
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
