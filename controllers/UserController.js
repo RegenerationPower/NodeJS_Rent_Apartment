@@ -6,8 +6,6 @@ let users = [
 ];
 
 getUsers = function() {
-    const userInfo = users[0].getInfo();
-    console.log(userInfo);
     return users
 };
 

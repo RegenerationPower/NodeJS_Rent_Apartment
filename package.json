@@ -19,6 +19,7 @@
     "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
-    "eslint": "^8.40.0"
+    "eslint": "^8.40.0",
+    "nodemon": "^2.0.22"
   }
 }
