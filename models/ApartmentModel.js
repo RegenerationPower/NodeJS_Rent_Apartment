@@ -1,11 +1,11 @@
 class ApartmentModel {
-    constructor(id, user_id, rooms_list, heading, monthly_price, publishing_date_time, total_square, floor_number, description, number, house_number, street_name, city_name) {
+    constructor(id, user_id, rooms_list, heading, monthly_price, total_square, floor_number, description, number, house_number, street_name, city_name) {
         this._id = id;
         this._user_id = user_id;
         this._rooms_list = rooms_list;
         this._heading = heading;
         this._monthly_price = monthly_price;
-        this._publishing_date_time = publishing_date_time;
+        this._publishing_date_time = new Date(Date.now()).toLocaleString();
         this._total_square = total_square;
         this._floor_number = floor_number;
         this._description = description;

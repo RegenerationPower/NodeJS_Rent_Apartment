@@ -25,7 +25,7 @@ roomRouter.route('/:roomId')
             res.json(room)
         }else{
             res.statusCode = 404
-            res.end('No user found')
+            res.end('No room found')
         }
     })
     .put((req, res, next) => {
