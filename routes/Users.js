@@ -1,14 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const router = express.Router();
-const {getUserById, getUsers, updateUserById, deleteUserById, addUser} = require("../controllers/UserController");
+const {getUserById, getUsers, updateUserById, deleteUserById, addUser, filterUsers} = require("../controllers/UserController");
 
 router.route('/')
-    .get((req, res, next) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json')
-        res.json(getUsers())
-    })
+    .get(filterUsers)
+    // .get((req, res, next) => {
+    //     res.statusCode = 200;
+    //     res.setHeader('Content-Type', 'application/json')
+    //     res.json(getUsers())
+    // })
     .post((req, res, next) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json')

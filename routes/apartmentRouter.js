@@ -1,16 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const roomController = require('../controllers/RoomController');
-const {getApartments, addApartment, getApartmentById, updateApartmentById, deleteApartmentById} = require("../controllers/ApartmentController");
+const {getApartments, addApartment, getApartmentById, updateApartmentById, deleteApartmentById, filterApartments} = require("../controllers/ApartmentController");
 
 const apartmentRouter = express.Router();
 
 apartmentRouter.route('/')
-    .get((req, res, next) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json')
-        res.json(getApartments())
-    })
+    .get(filterApartments)
     .post((req, res, next) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json')

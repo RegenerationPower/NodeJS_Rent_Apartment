@@ -34,4 +34,16 @@ deleteRoomById = function(id) {
     }
     return room
 }
-module.exports = {getRooms, getRoomById, addRoom, updateRoomById, deleteRoomById}
+filterRooms = function (req, res, next){
+    const filters = req.query;
+    const filteredRooms = rooms.filter(room => {
+        let isValid = true;
+        for (key in filters) {
+            console.log(key, room[key], filters[key]);
+            isValid = isValid && room[key] == filters[key];
+        }
+        return isValid;
+    });
+    res.send(filteredRooms);
+}
+module.exports = {getRooms, getRoomById, addRoom, updateRoomById, deleteRoomById, filterRooms}

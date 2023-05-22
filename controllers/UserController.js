@@ -33,4 +33,16 @@ deleteUserById = function(id) {
     }
     return user
 }
-module.exports = {addUser, getUsers, getUserById, updateUserById ,deleteUserById, users}
+filterUsers = function (req, res, next){
+    const filters = req.query;
+    const filteredUsers = users.filter(user => {
+        let isValid = true;
+        for (key in filters) {
+            console.log(key, user[key], filters[key]);
+            isValid = isValid && user[key] == filters[key];
+        }
+        return isValid;
+    });
+    res.send(filteredUsers);
+}
+module.exports = {addUser, getUsers, getUserById, updateUserById ,deleteUserById, filterUsers, users}

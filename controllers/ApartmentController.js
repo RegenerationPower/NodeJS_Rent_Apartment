@@ -46,4 +46,16 @@ deleteApartmentById = function(id) {
     }
     return apartment
 }
-module.exports = {getApartments, addApartment, getApartmentById, updateApartmentById, deleteApartmentById}
+filterApartments = function (req, res, next){
+    const filters = req.query;
+    const filteredApartments = apartments.filter(apartment => {
+        let isValid = true;
+        for (key in filters) {
+            console.log(key, apartment[key], filters[key]);
+            isValid = isValid && apartment[key] == filters[key];
+        }
+        return isValid;
+    });
+    res.send(filteredApartments);
+}
+module.exports = {getApartments, addApartment, getApartmentById, updateApartmentById, deleteApartmentById, filterApartments}

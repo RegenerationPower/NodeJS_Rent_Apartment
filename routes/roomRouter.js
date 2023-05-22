@@ -1,16 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const roomController = require('../controllers/RoomController');
-const {getRooms, addRoom, getRoomById, updateRoomById, deleteRoomById} = require("../controllers/RoomController");
+const {getRooms, addRoom, getRoomById, updateRoomById, deleteRoomById, filterRooms} = require("../controllers/RoomController");
 
 const roomRouter = express.Router();
 
 roomRouter.route('/')
-    .get((req, res, next) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json')
-        res.json(getRooms())
-    })
+    .get(filterRooms)
     .post((req, res, next) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json')
