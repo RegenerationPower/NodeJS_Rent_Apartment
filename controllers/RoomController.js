@@ -34,16 +34,26 @@ deleteRoomById = function(id) {
     }
     return room
 }
+
 filterRooms = function (req, res, next){
     const filters = req.query;
-    const filteredRooms = rooms.filter(room => {
+    let filteredRooms = rooms.filter(room => {
         let isValid = true;
         for (key in filters) {
+            if (key === "size" || key === "page"){continue}
             console.log(key, room[key], filters[key]);
             isValid = isValid && room[key] == filters[key];
         }
         return isValid;
     });
+    function paginateRooms(room){
+    }
+    let page = parseInt(req.query.page)
+    let size = parseInt(req.query.size)
+    // const result = filteredRooms.slice((page-1)*size, page*size)
+    if (page && size){
+        filteredRooms = filteredRooms.filter(room => filteredRooms.indexOf(room) >= (page - 1) * size && filteredRooms.indexOf(room) < page * size)
+    }
     res.send(filteredRooms);
 }
 module.exports = {getRooms, getRoomById, addRoom, updateRoomById, deleteRoomById, filterRooms}

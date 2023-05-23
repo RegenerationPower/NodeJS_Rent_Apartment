@@ -20,7 +20,7 @@ roomRouter.route('/:roomId')
             res.setHeader('Content-Type', 'application/json')
             res.json(room)
         }else{
-            res.statusCode = 404
+            res.statusCode = 403
             res.end('No room found')
         }
     })
