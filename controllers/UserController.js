@@ -1,8 +1,8 @@
 const User = require('../models/UserModel');
 
 let users = [
-    new User(1, 1, 'Bobby', 'Fish', 'bob.fish@gmail.com', '12345'),
-    new User(2, 1, 'First', 'Last', 'first1@gmail.com', '12345'),
+    new User(1, "User", 'Bobby', 'Fish', 'bob.fish@gmail.com', '12345'),
+    new User(2, "Admin", 'First', 'Last', 'first1@gmail.com', '12345'),
 ];
 
 getUsers = function() {
@@ -10,7 +10,7 @@ getUsers = function() {
 };
 
 addUser = function (data){
-    const user = new User(data.id, data.id_role, data.first_name, data.last_name, data.email, data.password)
+    const user = new User(data.id, data.role, data.first_name, data.last_name, data.email, data.password)
     users[users.length] = user
     return user
 }
@@ -20,7 +20,7 @@ getUserById = function (id){
 }
 updateUserById = function (id, data) {
     const index = users.indexOf(getUserById(id))
-    const user = new User(data.id, data.id_role, data.first_name, data.last_name, data.email, data.password)
+    const user = new User(data.id, data.role, data.first_name, data.last_name, data.email, data.password)
     users[index] = user
     return user
 

@@ -8,12 +8,14 @@
     "lint": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "http-errors": "~1.6.3",
+    "joi": "^17.9.2",
     "morgan": "~1.9.1",
     "swagger-autogen": "^2.23.1",
     "swagger-ui-express": "^4.6.3"

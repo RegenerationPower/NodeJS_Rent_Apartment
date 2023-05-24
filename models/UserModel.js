@@ -1,7 +1,7 @@
 class UserModel {
-    constructor(id, id_role, first_name, last_name, email, password) {
+    constructor(id, role, first_name, last_name, email, password) {
         this._id = id;
-        this._id_role = id_role;
+        this._role = role;
         this._first_name = first_name;
         this._last_name = last_name;
         this._email = email;
@@ -9,14 +9,14 @@ class UserModel {
     }
 
     getInfo() {
-        return `User ${this._first_name} ${this._last_name} with ID ${this._id} with RoleID ${this._id_role} email ${this._email} and password ${this._password}`;
+        return `User ${this._first_name} ${this._last_name} with ID ${this._id} with RoleID ${this._role} email ${this._email} and password ${this._password}`;
     }
 
     get id() {
         return this._id;
     }
 
-    get id_role() {
+    get role() {
         return this._role;
     }
 
