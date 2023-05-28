@@ -35,14 +35,14 @@ deleteRoomById = function(id) {
     return room
 }
 
-filterRooms = function (req, res, next){
+filterRooms = function (req, res){
     const filters = req.query;
     let filteredRooms = rooms.filter(room => {
         let isValid = true;
-        for (key in filters) {
+        for (let key in filters) {
             if (key === "size" || key === "page"){continue}
             console.log(key, room[key], filters[key]);
-            isValid = isValid && room[key] == filters[key];
+            isValid = isValid && room[key] === filters[key];
         }
         return isValid;
     });

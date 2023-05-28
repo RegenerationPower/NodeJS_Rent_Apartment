@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apartment Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 5px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1><%= apartment._heading %></h1>
+    <p>Number of Rooms: <%= apartment._rooms_list.length %></p>
+    <p>Monthly Price: <%= apartment._monthly_price %> hrn</p>
+    <p>Publishing Date: <%= apartment._publishing_date_time %></p>
+    <p>Total Square: <%= apartment._total_square %> square meters</p>
+    <p>Floor Number: <%= apartment._floor_number %></p>
+    <p>Description: <%= apartment._description %></p>
+    <p>Apartment Number: <%= apartment._number %></p>
+    <p>House Number: <%= apartment._house_number %></p>
+    <p>Street Name: <%= apartment._street_name %></p>
+    <p>City Name: <%= apartment._city_name %></p>
+</div>
+</body>
+</html>

@@ -16,7 +16,7 @@ addUser = function (data){
 }
 
 getUserById = function (id){
-    return users.find(user => user.id == id)
+    return users.find(user => user.id === id)
 }
 updateUserById = function (id, data) {
     const index = users.indexOf(getUserById(id))
@@ -33,13 +33,13 @@ deleteUserById = function(id) {
     }
     return user
 }
-filterUsers = function (req, res, next){
+filterUsers = function (req, res){
     const filters = req.query;
     const filteredUsers = users.filter(user => {
         let isValid = true;
         for (key in filters) {
             console.log(key, user[key], filters[key]);
-            isValid = isValid && user[key] == filters[key];
+            isValid = isValid && user[key] === filters[key];
         }
         return isValid;
     });

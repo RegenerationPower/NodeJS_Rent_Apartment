@@ -2,14 +2,14 @@ const Apartment = require('../models/ApartmentModel')
 
 let apartments = [
     new Apartment(1, 1, [1, 2, 3], "Затишна квартира на Троєщині", 8000,
-        60, 4, "Cool apt", 402,
+        60, 4, "Затишна квартира на Троєщині, без дітей та тварин!", 402,
         5, "вул. Карпенка Карого 5", "Kiev"),
     new Apartment(2, 2, [1, 2, 3], "Квартира у центрі", 35000,
-         80, 7, "Cool apt", 710,
+         80, 7, "Пропоную гарну квартиру з видом на Хрещатик", 710,
         8, "вул. Хрещатик 1", "Kiev"),
     new Apartment(3, 1, [1, 2, 3], "Квартира на Осокорках", 15000,
-        60, 10, "Cool apt", 1010,
-        8, "вул. Єлтзавети Чавдар 8", "Kiev")
+        60, 10, "Чудова квартира на лівому березі", 1010,
+        8, "вул. Єлизавети Чавдар 8", "Kiev")
 ]
 
 getApartments = function() {
@@ -26,7 +26,7 @@ addApartment = function (data){
 }
 
 getApartmentById = function (id){
-    return apartments.find(apartment => apartment.id == id)
+    return apartments.find(apartment => apartment.id === id)
 }
 updateApartmentById = function (id, data) {
     const index = apartments.indexOf(getApartmentById(id))
@@ -46,13 +46,13 @@ deleteApartmentById = function(id) {
     }
     return apartment
 }
-filterApartments = function (req, res, next){
+filterApartments = function (req, res){
     const filters = req.query;
     const filteredApartments = apartments.filter(apartment => {
         let isValid = true;
-        for (key in filters) {
+        for (let key in filters) {
             console.log(key, apartment[key], filters[key]);
-            isValid = isValid && apartment[key] == filters[key];
+            isValid = isValid && apartment[key] === filters[key];
         }
         return isValid;
     });

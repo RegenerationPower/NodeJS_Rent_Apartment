@@ -1,14 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const roomController = require('../controllers/RoomController');
-const {getRooms, addRoom, getRoomById, updateRoomById, deleteRoomById, filterRooms} = require("../controllers/RoomController");
+const {addRoom, getRoomById, updateRoomById, deleteRoomById, filterRooms} = require("../controllers/RoomController");
 const schemas = require('../helpers/validaton_schema')
 
 const roomRouter = express.Router();
 
 roomRouter.route('/')
     .get(filterRooms)
-    .post((req, res, next) => {
+    .post((req, res) => {
         const result_data = schemas.roomSchema.validate(req.body)
         if (result_data.error){
             res.statusCode = 400
@@ -22,19 +20,22 @@ roomRouter.route('/')
     })
 
 roomRouter.route('/:roomId')
-    .get((req, res, next) => {
-
+    .get((req, res) => {
         const room = getRoomById(req.params.roomId)
         if (room) {
-            res.setHeader('Content-Type', 'application/json')
-            res.statusCode = 200
-            res.json(room)
+            const acceptHeader = req.headers.accept;
+            if (acceptHeader && acceptHeader.includes('application/json')) {
+                res.statusCode = 200
+                res.json(room);
+            } else {
+                res.render('room', {room});
+            }
         }else{
             res.statusCode = 403
             res.end('No room found')
         }
     })
-    .put((req, res, next) => {
+    .put((req, res) => {
         res.setHeader('Content-Type', 'application/json')
         const result_data = schemas.roomSchema.validate(req.body)
         if (result_data.error){
@@ -49,7 +50,7 @@ roomRouter.route('/:roomId')
             res.json(updateRoomById(req.params.roomId, result_data.value))
         }
     })
-    .delete((req, res, next) => {
+    .delete((req, res) => {
         if (!getRoomById(req.params.roomId)){
             res.statusCode = 403
             res.send("No room found")

@@ -1,11 +1,10 @@
 const express = require('express');
-const bodyParser = require('body-parser')
 const router = express.Router();
-const {getUserById, getUsers, updateUserById, deleteUserById, addUser, filterUsers} = require("../controllers/UserController");
+const {getUserById, updateUserById, deleteUserById, addUser, filterUsers} = require("../controllers/UserController");
 const schemas = require("../helpers/validaton_schema")
 router.route('/')
     .get(filterUsers)
-    .post((req, res, next) => {
+    .post((req, res) => {
         const result_data = schemas.userSchema.validate(req.body)
         if (result_data.error){
             res.statusCode = 400
@@ -19,18 +18,22 @@ router.route('/')
     })
 
 router.route('/:userId')
-    .get((req, res, next) => {
+    .get((req, res) => {
         const user = getUserById(req.params.userId)
         if (user) {
-            res.setHeader('Content-Type', 'application/json')
-            res.statusCode = 200
-            res.json(user)
+            const acceptHeader = req.headers.accept;
+            if (acceptHeader && acceptHeader.includes('application/json')) {
+                res.statusCode = 200
+                res.json(user);
+            } else {
+                res.render('user', {user});
+            }
         }else{
             res.statusCode = 404
             res.end('No user found')
         }
     })
-    .put((req, res, next) => {
+    .put((req, res) => {
         const result_data = schemas.userSchema.validate(req.body)
         if (result_data.error){
             res.statusCode = 400
@@ -41,7 +44,7 @@ router.route('/:userId')
             res.json(updateUserById(req.params.userId, result_data.value))
         }
     })
-    .delete((req, res, next) => {
+    .delete((req, res) => {
         if (!getUserById(req.params.userId)){
             res.statusCode = 403
             res.send("No user found")
