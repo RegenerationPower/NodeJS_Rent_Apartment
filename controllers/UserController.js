@@ -15,9 +15,11 @@ addUser = function (data){
     return user
 }
 
-getUserById = function (id){
-    return users.find(user => user.id === id)
+getUserById = function (id) {
+    const userId = parseInt(id, 10);
+    return users.find(user => user.id === userId);
 }
+
 updateUserById = function (id, data) {
     const index = users.indexOf(getUserById(id))
     const user = new User(data.id, data.role, data.first_name, data.last_name, data.email, data.password)
@@ -25,6 +27,7 @@ updateUserById = function (id, data) {
     return user
 
 }
+
 deleteUserById = function(id) {
     const index = users.indexOf(getUserById(id))
     const user = getUserById(id)
@@ -33,6 +36,7 @@ deleteUserById = function(id) {
     }
     return user
 }
+
 filterUsers = function (req, res){
     const filters = req.query;
     const filteredUsers = users.filter(user => {

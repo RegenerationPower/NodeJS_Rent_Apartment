@@ -27,6 +27,10 @@ class ApartmentModel {
         return this._rooms_list;
     }
 
+    set heading(value) {
+        this._heading = value;
+    }
+
     get heading() {
         return this._heading;
     }
