@@ -31,7 +31,7 @@ roomRouter.route('/:roomId')
                 res.render('room', {room});
             }
         }else{
-            res.statusCode = 403
+            res.statusCode = 404
             res.end('No room found')
         }
     })
@@ -42,7 +42,7 @@ roomRouter.route('/:roomId')
             res.statusCode = 400
             res.send(result_data.error)
         }else if (!getRoomById(req.params.roomId)){
-            res.statusCode = 403
+            res.statusCode = 404
             res.send("No room found")
         }
         else{
@@ -52,7 +52,7 @@ roomRouter.route('/:roomId')
     })
     .delete((req, res) => {
         if (!getRoomById(req.params.roomId)){
-            res.statusCode = 403
+            res.statusCode = 404
             res.send("No room found")
         }
         else{

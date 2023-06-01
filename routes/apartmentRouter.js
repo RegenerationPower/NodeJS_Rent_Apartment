@@ -49,7 +49,7 @@ apartmentRouter.route('/:apartmentId')
     })
     .delete((req, res) => {
         if (!getApartmentById(req.params.apartmentId)){
-            res.statusCode = 403
+            res.statusCode = 404
             res.send("No apartment found")
         }else{
             res.setHeader('Content-Type', 'application/json')

@@ -46,7 +46,7 @@ router.route('/:userId')
     })
     .delete((req, res) => {
         if (!getUserById(req.params.userId)){
-            res.statusCode = 403
+            res.statusCode = 404
             res.send("No user found")
         }else{
             res.setHeader('Content-Type', 'application/json')
