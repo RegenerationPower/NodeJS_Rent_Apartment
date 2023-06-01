@@ -1,61 +1,130 @@
-const Apartment = require('../models/ApartmentModel')
+const db = require('../models/Index')
 
-let apartments = [
-    new Apartment(1, 1, [1, 2, 3], "Затишна квартира на Троєщині", 8000,
-        60, 4, "Затишна квартира на Троєщині, без дітей та тварин!", 402,
-        5, "вул. Карпенка Карого 5", "Kiev"),
-    new Apartment(2, 2, [1, 2, 3], "Квартира у центрі", 35000,
-         80, 7, "Пропоную гарну квартиру з видом на Хрещатик", 710,
-        8, "вул. Хрещатик 1", "Kiev"),
-    new Apartment(3, 1, [1, 2, 3], "Квартира на Осокорках", 15000,
-        60, 10, "Чудова квартира на лівому березі", 1010,
-        8, "вул. Єлизавети Чавдар 8", "Kiev")
-]
+const Apartment = db.Apartment;
+const Room = db.Room;
 
-getApartments = function() {
-    return apartments
+const addApartment = function (req, res) {
+    return Apartment
+        .create({
+            monthlyPrice: req.body.monthlyPrice,
+            viewsNumber: req.body.viewsNumber,
+            floorNumber: req.body.floorNumber,
+            hasCentralizedHeating: req.body.hasCentralizedHeating,
+            description: req.body.description,
+            houseNumber: req.body.houseNumber,
+            streetName: req.body.streetName,
+            cityName: req.body.cityName
+        })
+        .then((apartment) => {
+            res.status(201).send(apartment)
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
+}
+
+const getApartments = function (req, res) {
+    return Apartment
+        .findAll({
+            include: [{
+                model: Room,
+                as: 'rooms'
+            }]
+        })
+        .then((apartments) => {
+            res.status(200).send(apartments)
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
+}
+
+const getApartmentById = function (req, res) {
+    return Apartment
+        .findByPk(req.params.id, {
+            include: [{
+                model: Room,
+                as: 'rooms'
+            }]
+        })
+        .then((apartment) => {
+            if (!apartment) {
+                return res.status(404).send({
+                    message: 'Apartment Not Found'
+                });
+            }
+            return res.status(200).send(apartment);
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
+}
+
+const updateApartmentById = function (req, res) {
+    return Apartment
+        .findByPk(req.params.id)
+        .then((apartment) => {
+            if (!apartment) {
+                return res.status(404).send({
+                    message: 'Apartment Not Found'
+                });
+            }
+
+            return apartment
+                .update({
+                    monthlyPrice: req.body.monthlyPrice,
+                    viewsNumber: req.body.viewsNumber,
+                    floorNumber: req.body.floorNumber,
+                    hasCentralizedHeating: req.body.hasCentralizedHeating,
+                    description: req.body.description,
+                    houseNumber: req.body.houseNumber,
+                    streetName: req.body.streetName,
+                    cityName: req.body.cityName
+                })
+                .then((apartments) => {
+                    res.status(200).send(apartments)
+                })
+                .catch((error) => {
+                    res.status(400).send(error)
+                });
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
+}
+
+const deleteApartmentById = function (req, res) {
+    return Apartment
+        .findByPk(req.params.id)
+        .then(apartment => {
+            if (!apartment) {
+                return res.status(400).send({
+                    message: 'Apartment Not Found',
+                });
+            }
+
+            return apartment
+                .destroy()
+                .then(() => {
+                    res.status(204).send()
+                })
+                .catch((error) => {
+                    res.status(400).send(error)
+                });
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
+}
+
+const filterApartments = function (req, res) {
+}
+
+module.exports = {
+    addApartment,
+    getApartments,
+    getApartmentById,
+    updateApartmentById,
+    deleteApartmentById,
+    filterApartments
 };
-
-addApartment = function (data){
-    const apartment = new Apartment(
-        data.id, data.user_id, data.rooms_list, data.heading, data.monthly_price, data.total_square, data.floor_number,
-        data.description, data.number,  data.house_number, data.street_name, data.city_name
-    )
-    apartments[apartments.length] = apartment
-    return apartment
-}
-
-getApartmentById = function (id){
-    return apartments.find(apartment => apartment.id === id)
-}
-updateApartmentById = function (id, data) {
-    const index = apartments.indexOf(getApartmentById(id))
-    const apartment = new Apartment(
-        data.id, data.user_id, data.rooms_list, data.heading, data.monthly_price, data.total_square, data.floor_number,
-        data.description, data.number,  data.house_number, data.street_name, data.city_name
-    )
-    apartments[index] = apartment
-    return apartment
-
-}
-deleteApartmentById = function(id) {
-    const index = apartments.indexOf(getApartmentById(id))
-    const apartment = getApartmentById(id)
-    if (index > -1) {
-        apartments.splice(index, 1);
-    }
-    return apartment
-}
-filterApartments = function (req, res){
-    const filters = req.query;
-    const filteredApartments = apartments.filter(apartment => {
-        let isValid = true;
-        for (let key in filters) {
-            console.log(key, apartment[key], filters[key]);
-            isValid = isValid && apartment[key] === filters[key];
-        }
-        return isValid;
-    });
-    res.send(filteredApartments);
-}
-module.exports = {getApartments, addApartment, getApartmentById, updateApartmentById, deleteApartmentById, filterApartments}

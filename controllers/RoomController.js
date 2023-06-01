@@ -1,59 +1,149 @@
-const Room = require('../models/RoomModel')
+const db = require('../models/Index')
 
-let rooms = [
-    new Room(1, 'Living Room', 22),
-    new Room(2, 'Kitchen', 15),
-    new Room(3, 'Bathroom', 10)
-]
+const Apartment = db.Apartment;
+const Room = db.Room;
+const Furniture = db.Furniture;
 
-getRooms = function() {
-    return rooms
+addRoom = function (req, res) {
+    return Apartment
+        .findByPk(req.body.id_apartment)
+        .then(apartment => {
+            if (!apartment) {
+                return res.status(400).send({
+                    message: 'Apartment Not Found',
+                });
+            }
+
+            return Room
+                .create({
+                    id_apartment: req.body.id_apartment,
+                    area: req.body.area
+                })
+                .then((room) => {
+                    apartment
+                        .update({
+                            totalArea: apartment.getDataValue('totalArea') + room.getDataValue('area'),
+                            roomsNumber: apartment.getDataValue('roomsNumber') + 1
+                        })
+                        .then(() => {
+                            res.status(201).send(room)
+                        })
+                        .catch((error) => {
+                            res.status(400).send(error)
+                        });
+                })
+                .catch((error) => {
+                    res.status(400).send(error)
+                });
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
+}
+
+getRoomById = function (req, res) {
+    return Room
+        .findByPk(req.params.id, {
+            include: [{
+                model: Apartment,
+                as: 'apartment'
+            }, {
+                model: Furniture,
+                as: 'furniture',
+            }]
+        })
+        .then((room) => {
+            if (!room) {
+                return res.status(404).send({
+                    message: 'Room Not Found'
+                });
+            }
+
+            return res.status(200).send(room);
+        })
+        .catch((error) => {
+            res.status(400).send(error);
+        });
+}
+
+getRooms = function (req, res) {
+    return Room
+        .findAll({
+            include: [{
+                model: Apartment,
+                as: 'apartment'
+            }, {
+                model: Furniture,
+                as: 'furniture',
+            }]
+        })
+        .then((rooms) => {
+            res.status(200).send(rooms);
+        })
+        .catch((error) => {
+            res.status(400).send(error);
+        });
 };
 
-addRoom = function (data){
-    const room = new Room(data.id, data.type, data.square)
-    rooms[rooms.length] = room
-    return room
+updateRoomById = function (req, res) {
+    return Room
+        .findByPk(req.params.id)
+        .then((room) => {
+            if (!room) {
+                return res.status(404).send({
+                    message: 'Room Not Found'
+                });
+            }
+
+            return room
+                .update({
+                    id_apartment: req.body.id_apartment,
+                    area: req.body.area
+                })
+                .then(() => {
+                    res.status(200).send(room)
+                })
+                .catch((error) => {
+                    res.status(400).send(error)
+                });
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
 }
 
-getRoomById = function (id){
-    return rooms.find(room => room.id == id)
-}
-updateRoomById = function (id, data) {
-    const index = rooms.indexOf(getRoomById(id))
-    const room = new Room(data.id, data.type, data.square)
-    rooms[index] = room
-    return room
+deleteRoomById = function (req, res) {
+    return Room
+        .findByPk(req.params.id)
+        .then(room => {
+            if (!room) {
+                return res.status(400).send({
+                    message: 'Room Not Found',
+                });
+            }
 
-}
-deleteRoomById = function(id) {
-    const index = rooms.indexOf(getRoomById(id))
-    const room = getRoomById(id)
-    if (index > -1) {
-        rooms.splice(index, 1);
-    }
-    return room
+            return room
+                .destroy()
+                .then(() => {
+                    res.status(204).send()
+                })
+                .catch((error) => {
+                    res.status(400).send(error)
+                });
+        })
+        .catch((error) => {
+            res.status(400).send(error)
+        });
 }
 
-filterRooms = function (req, res){
-    const filters = req.query;
-    let filteredRooms = rooms.filter(room => {
-        let isValid = true;
-        for (let key in filters) {
-            if (key === "size" || key === "page"){continue}
-            console.log(key, room[key], filters[key]);
-            isValid = isValid && room[key] === filters[key];
-        }
-        return isValid;
-    });
-    function paginateRooms(room){
-    }
-    let page = parseInt(req.query.page)
-    let size = parseInt(req.query.size)
-    // const result = filteredRooms.slice((page-1)*size, page*size)
-    if (page && size){
-        filteredRooms = filteredRooms.filter(room => filteredRooms.indexOf(room) >= (page - 1) * size && filteredRooms.indexOf(room) < page * size)
-    }
-    res.send(filteredRooms);
+filterRooms = function (req, res) {
 }
-module.exports = {getRooms, getRoomById, addRoom, updateRoomById, deleteRoomById, filterRooms}
+
+module.exports = {
+    getRooms,
+    getRoomById,
+    addRoom,
+    updateRoomById,
+    deleteRoomById,
+    filterRooms
+}
