@@ -1,11 +1,11 @@
 const express = require('express');
-const furnitureController = require('../controllers/FurnitureController');
+
+const furnitureController = require('../controllers/furniture.controller');
 
 const furnitureRouter = express.Router();
 
 furnitureRouter.route('/')
     .get(furnitureController.getFurniture)
-    .get(furnitureController.filterFurniture)
     .post(furnitureController.addFurniture);
 
 furnitureRouter.route('/:id')

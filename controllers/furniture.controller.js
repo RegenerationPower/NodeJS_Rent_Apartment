@@ -1,6 +1,6 @@
-const db = require('../models/Index')
+const db = require('../models/relation.model');
 
-const Furniture = db.Furniture;
+const Furniture = db.Furniture
 const Room = db.Room;
 
 addFurniture = function (req, res) {
@@ -9,10 +9,10 @@ addFurniture = function (req, res) {
             name: req.body.name
         })
         .then((furniture) => {
-            res.status(201).send(furniture)
+            return res.status(201).send(furniture)
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error)
         });
 }
 
@@ -34,7 +34,7 @@ getFurnitureById = function (req, res) {
             return res.status(200).send(furniture);
         })
         .catch((error) => {
-            res.status(400).send(error);
+            return res.status(400).send(error);
         });
 }
 
@@ -47,10 +47,10 @@ getFurniture = function (req, res) {
             }]
         })
         .then((furniture) => {
-            res.status(200).send(furniture);
+            return res.status(200).send(furniture);
         })
         .catch((error) => {
-            res.status(400).send(error);
+            return res.status(400).send(error);
         });
 };
 
@@ -74,14 +74,14 @@ updateFurnitureById = function (req, res) {
                     name: req.body.name
                 })
                 .then(() => {
-                    res.status(200).send(furniture)
+                    return res.status(200).send(furniture)
                 })
                 .catch((error) => {
-                    res.status(400).send(error)
+                    return res.status(400).send(error)
                 });
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error)
         });
 }
 
@@ -98,18 +98,15 @@ deleteFurnitureById = function (req, res) {
             return furniture
                 .destroy()
                 .then(() => {
-                    res.status(204).send()
+                    return res.status(204).send()
                 })
                 .catch((error) => {
-                    res.status(400).send(error)
+                    return res.status(400).send(error)
                 });
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error)
         });
-}
-
-filterFurniture = function (req, res) {
 }
 
 module.exports = {
@@ -117,6 +114,5 @@ module.exports = {
     getFurnitureById,
     addFurniture,
     updateFurnitureById,
-    deleteFurnitureById,
-    filterFurniture
+    deleteFurnitureById
 }

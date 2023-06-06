@@ -21,24 +21,15 @@
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
           }
         }
       }
     },
     "/{userId}": {
-      "get": {
+      "post": {
         "description": "",
         "produces": [
           "application/json"
@@ -52,8 +43,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad request"
           }
         }
       },
@@ -73,6 +67,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
           }
         }
       },
@@ -92,12 +89,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     },
     "/{roomId}": {
-      "get": {
+      "post": {
         "description": "",
         "produces": [
           "application/json"
@@ -111,8 +111,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad request"
           }
         }
       },
@@ -132,6 +135,12 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
           }
         }
       },
@@ -151,12 +160,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
           }
         }
       }
     },
     "/{apartmentId}": {
-      "get": {
+      "post": {
         "description": "",
         "produces": [
           "application/json"
@@ -170,8 +182,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad request"
           }
         }
       },
@@ -191,6 +206,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
           }
         }
       },
@@ -210,6 +228,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
           }
         }
       }

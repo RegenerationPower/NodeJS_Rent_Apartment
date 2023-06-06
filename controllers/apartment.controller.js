@@ -1,7 +1,8 @@
-const db = require('../models/Index')
+const db = require('../models/relation.model');
 
-const Apartment = db.Apartment;
+const Apartment = db.Apartment
 const Room = db.Room;
+const Furniture = db.Furniture;
 
 const addApartment = function (req, res) {
     return Apartment
@@ -16,10 +17,10 @@ const addApartment = function (req, res) {
             cityName: req.body.cityName
         })
         .then((apartment) => {
-            res.status(201).send(apartment)
+            return res.status(201).send(apartment);
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error);
         });
 }
 
@@ -28,14 +29,18 @@ const getApartments = function (req, res) {
         .findAll({
             include: [{
                 model: Room,
-                as: 'rooms'
+                as: 'rooms',
+                include: [{
+                    model: Furniture,
+                    as: 'furniture'
+                }]
             }]
         })
         .then((apartments) => {
-            res.status(200).send(apartments)
+            return res.status(200).send(apartments);
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error);
         });
 }
 
@@ -44,7 +49,11 @@ const getApartmentById = function (req, res) {
         .findByPk(req.params.id, {
             include: [{
                 model: Room,
-                as: 'rooms'
+                as: 'rooms',
+                include: [{
+                    model: Furniture,
+                    as: 'furniture'
+                }]
             }]
         })
         .then((apartment) => {
@@ -53,10 +62,11 @@ const getApartmentById = function (req, res) {
                     message: 'Apartment Not Found'
                 });
             }
+
             return res.status(200).send(apartment);
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error);
         });
 }
 
@@ -82,14 +92,14 @@ const updateApartmentById = function (req, res) {
                     cityName: req.body.cityName
                 })
                 .then((apartments) => {
-                    res.status(200).send(apartments)
+                    return res.status(200).send(apartments);
                 })
                 .catch((error) => {
-                    res.status(400).send(error)
+                    return res.status(400).send(error);
                 });
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error);
         });
 }
 
@@ -106,18 +116,15 @@ const deleteApartmentById = function (req, res) {
             return apartment
                 .destroy()
                 .then(() => {
-                    res.status(204).send()
+                    return res.status(204).send();
                 })
                 .catch((error) => {
-                    res.status(400).send(error)
+                    return res.status(400).send(error);
                 });
         })
         .catch((error) => {
-            res.status(400).send(error)
+            return res.status(400).send(error);
         });
-}
-
-const filterApartments = function (req, res) {
 }
 
 module.exports = {
@@ -125,6 +132,5 @@ module.exports = {
     getApartments,
     getApartmentById,
     updateApartmentById,
-    deleteApartmentById,
-    filterApartments
+    deleteApartmentById
 };

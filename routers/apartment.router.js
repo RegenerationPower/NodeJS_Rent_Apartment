@@ -1,11 +1,11 @@
 const express = require('express');
-const apartmentController = require("../controllers/ApartmentController");
+
+const apartmentController = require("../controllers/apartment.controller");
 
 const apartmentRouter = express.Router();
 
 apartmentRouter.route('/')
     .get(apartmentController.getApartments)
-    .get(apartmentController.filterApartments)
     .post(apartmentController.addApartment);
 
 apartmentRouter.route('/:id')
